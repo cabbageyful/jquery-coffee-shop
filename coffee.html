@@ -34,9 +34,9 @@
                 </td>
             </tr>
             <tr>
-                <td>$3.25</td>
-                <td>$4.15</td>
-                <td>$2.50</td>
+                <td id="price_espresso">$3.25</td>
+                <td id="price_latte">$4.15</td>
+                <td id="price_hc">$2.50</td>
             </tr>
         </table>
 
@@ -45,25 +45,64 @@
 </div>
 
 <script>
-    var swapMe = $('#coffee_image')
+    "use strict";
+
+    var drinksOrdered = [];
+    var drinkTotal = 0;
+    var espresso = $('#espresso');
+    var latte = $('#latte');
+    var hc = $('#hot-chocolate');
+    var swapMe = $('#coffee_image');
     swapMe.attr('src', 'static/coffee_beans.jpg');
     
 
     var myRevenueMessage = $("#revenue");
+    var prices = {
+        "brew": 2.05,
+        "espresso": 3.25,
+        "latte": 4.15,
+        "hot chocolate": 2.50
+    };
 
     // myImage.addEventListener('click', function () {
     //     return makeCoffee();
     // });
     swapMe.click(function () {
-        return makeCoffee();
+        return makeCoffee('brew');
     });
 
-    function makeCoffee() {
+    espresso.click(function () {
+        return makeCoffee('espresso');
+    });
+
+    latte.click(function () {
+        return makeCoffee('latte');
+    });
+
+    hc.click(function () {
+        return makeCoffee('hot chocolate');
+    });
+
+    function makeCoffee(drinkType) {
+         drinksOrdered.push(drinkType);
+         console.log(drinksOrdered);
+
          swapMe.attr("src", "static/coffee_machine.jpg");
-         setTimeout(function() { swapMe.attr('src', "static/coffee_mug.jpg"); }, 500);
-         setTimeout(function() { swapMe.attr('src', "static/coffee_beans.jpg"); }, 1500);
+         setTimeout(function() { swapMe.attr('src', "static/coffee_mug.jpg"); }, 1500);
+         setTimeout(function() { swapMe.attr('src', "static/coffee_beans.jpg"); }, 2500);
+
+         revenue();
     }
 
+    function revenue(){
+        drinkTotal += prices[drinksOrdered[drinksOrdered.length-1]];
+                // finds last item added, uses it as the key to grab value from prices
+                // and adds & updates the drink total. 
+
+        myRevenueMessage.html('The revenue for today is $' + drinkTotal.toFixed(2));
+    }
+
+    
 </script>
 
 </body>
